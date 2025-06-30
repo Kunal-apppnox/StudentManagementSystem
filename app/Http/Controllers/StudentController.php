@@ -119,9 +119,9 @@ class StudentController extends Controller
         try {
             $students = Student::all();
             return response()->json([
-                'message' => 'Here is the list of all students:',
+                'message' => 'Listing of all students:',
                 'students' => $students,
-            ], 201);
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Unknown Eror Occured.',
@@ -178,7 +178,7 @@ class StudentController extends Controller
             return response()->json([
                 'message' => 'here is the student you have searched of:',
                 'student' => $student,
-            ], 201);
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Unknown Error Occured',
@@ -347,8 +347,8 @@ class StudentController extends Controller
                 return response()->json(['message' => 'Not found'], 404);
             $student->delete();
             return response()->json([
-                'message' => 'Student Deleted Successsfully.'
-            ], 201);
+                'message' => 'Student Deleted Successfully.'
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Student can not be deleted.',
