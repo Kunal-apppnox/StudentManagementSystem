@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use App\Http\Requests\registerTeacherRequest;
-use App\Http\Requests\loginTeacherrequest;
+use App\Http\Requests\loginTeacherRequest;
 use App\Http\Requests\updateTeacherRequest;
 
 class AuthController extends Controller
@@ -69,7 +69,7 @@ class AuthController extends Controller
      *     @OA\Response(response=500, description="Registration failed") 
      * )
      */
- 
+
     public function register(registerTeacherRequest $request)
     {
         try {
@@ -111,20 +111,23 @@ class AuthController extends Controller
      */
 
 
-    public function login(loginTeacherRequest $request)
+    public function login(LoginTeacherRequest $request)
     {
-        try {
-            if (Auth::attempt($request->only('email', 'password'))) {
-                $token = Auth::user()->createToken('API Token')->accessToken;
-                return response()->json(['message' => 'Teacher Login Succesfully', 'token' => $token], 201);
-            }
-        } catch (Exception $e) {
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+            $token = $user->createToken('API Token')->accessToken;
+
             return response()->json([
-                'messgae' => 'Login failed, Check credentials properly and try again',
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'Teacher Login Successfully',
+                'token' => $token
+            ], 200);
         }
+
+        return response()->json([
+            'message' => 'Invalid credentials'
+        ], 401);
     }
+
 
     /**
      * @OA\Get(

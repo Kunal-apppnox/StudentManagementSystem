@@ -33,6 +33,7 @@ class loginTeacherRequest extends FormRequest
     {
         return [
             "email.required" => "Email is must required",
+            "email.email" => "Email must be in proper format like example@gamil.com",
 
             "password.required" => "Password can not be empty, Please enter a password",
             "password.min" => "Password contains at least 6 characters",
