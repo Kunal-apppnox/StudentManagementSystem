@@ -6,11 +6,11 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Student;
 use Laravel\Passport\Passport;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StudentListTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     /** @test */
     public function it_lists_all_students_successfully()
@@ -60,13 +60,13 @@ class StudentListTest extends TestCase
     public function it_rejects_access_for_non_teacher_roles()
     {
         Passport::actingAs(
-            User::factory()->create(['role' => 'student']), // Assuming only teachers can list
+            User::factory()->create(['role' => 'student']),
             ['*']
         );
 
         $response = $this->getJson('/api/students');
 
-        $response->assertStatus(403); // Forbidden, if policy is applied
+        $response->assertStatus(403);
     }
 
     /** @test */

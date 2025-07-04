@@ -25,11 +25,13 @@ class registerTeacherRequest extends FormRequest
     {
         return [
             "name" => "required|string|max:255",
-            "email" => "required|email|min:6|max:255|unique:users",
+            // "email" => "required|email|min:6|max:255|unique:users",
+            'email' => 'required|email|unique:users,email',
             "password" => "required|min:6|max:255",
             "role" => "required|in:teacher",
         ];
     }
+
     public function messages(): array
     {
         return [
@@ -60,4 +62,5 @@ class registerTeacherRequest extends FormRequest
             "errors" => $validator->errors()->all(),
         ], 422));
     }
+
 }

@@ -4,13 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Student;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class StudentDeleteTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     /** @test */
     public function it_deletes_a_student_successfully()
@@ -50,9 +50,9 @@ class StudentDeleteTest extends TestCase
             ['*']
         );
 
-        $response = $this->deleteJson("/api/students/9999"); 
+        $response = $this->deleteJson("/api/students/9999");
 
-        $response->assertStatus(500); 
+        $response->assertStatus(500);
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class StudentDeleteTest extends TestCase
 
         $response = $this->deleteJson("/api/students/{$student->id}");
 
-        $response->assertStatus(403); 
+        $response->assertStatus(403);
     }
 
     /** @test */
@@ -84,6 +84,6 @@ class StudentDeleteTest extends TestCase
             ->assertStatus(200);
 
         $this->deleteJson("/api/students/{$student->id}")
-            ->assertStatus(500); 
+            ->assertStatus(500);
     }
 }

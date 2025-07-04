@@ -18,7 +18,7 @@ class StudentWelcomeMail extends Mailable
      */
 
     // that's how we implement constructor injection.
-     public $student;
+    public $student;
     public function __construct($student)
     {
         $this->student = $student;

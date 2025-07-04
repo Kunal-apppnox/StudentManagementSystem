@@ -38,18 +38,19 @@ class updateStudentrequest extends FormRequest
 
             "email.sometimes" => "Please enter a valid email.",
             "email.email" => "Enter email like example@gmail.com",
-            
+
             "age.sometimes" => "Please enter a valid age.",
             "age.integer" => "Age must be an integer.",
         ];
     }
 
+
     protected function failedValidation(Validator $validator)
     {
         $response = response()->json([
-           "success" => false,
-           'message' => "Some validation errors has occured, Please check:",
-           "errors" => $validator->errors()->all(),
+            "success" => false,
+            'message' => "Some validation errors has occured, Please check:",
+            "errors" => $validator->errors()->all(),
         ], 422);
 
         throw new HttpResponseException($response);

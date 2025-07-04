@@ -10,7 +10,7 @@ use App\Services\StudentMailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentrequest;
+use App\Http\Requests\UpdateStudentRequest;
 use OpenApi\Annotations as OA;
 
 
@@ -281,7 +281,7 @@ class StudentController extends Controller
      *     )
      * )
      */
-    public function update(updateStudentrequest $request, $id)
+    public function update(updateStudentRequest $request, $id)
     {
         try {
             $student = Student::findOrFail($id);

@@ -3,13 +3,14 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class CreateStudentTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
+
     public function test_authenticated_user_can_create_student()
     {
         $user = User::factory()->create([
@@ -18,11 +19,13 @@ class CreateStudentTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->postJson('/api/students', [
-            'name' => 'kunal',
-            'email' => 'kunal.appnox@gmail.com',
-            'age' => 23,
-        ]);
+        $studentData = [
+            'name' => 'Kunal Sharma',
+            'email' => 'kunal' . uniqid() . '@gmail.com',
+            'age' => 24,
+        ];
+
+        $response = $this->postJson('/api/students', $studentData);
 
         $response->assertStatus(201);
 
@@ -34,14 +37,32 @@ class CreateStudentTest extends TestCase
                 'name',
                 'email',
                 'age',
+                'created_at',
+                'updated_at',
             ],
         ]);
 
-        $this->assertDatabaseHas('students', [
-            'name' => 'kunal',
-            'email' => 'kunal.appnox@gmail.com',
-            'age' => 23,
+        $response->assertJson([
+            'success' => true,
+            'message' => 'New Student has been created and Mail has been sent.',
+            'student' => [
+                'name' => $studentData['name'],
+                'email' => $studentData['email'],
+                'age' => $studentData['age'],
+            ]
         ]);
+
+        $this->assertDatabaseHas('students', [
+            'name' => $studentData['name'],
+            'email' => $studentData['email'],
+            'age' => $studentData['age'],
+        ]);
+
+        $responseData = $response->json();
+        $this->assertArrayHasKey('created_at', $responseData['student']);
+        $this->assertArrayHasKey('updated_at', $responseData['student']);
+
+        $this->assertMatchesRegularExpression('/^.+\@\S+\.\S+$/', $responseData['student']['email']);
     }
 
     /** @test */
@@ -51,7 +72,7 @@ class CreateStudentTest extends TestCase
 
         $response = $this->postJson('/api/students', [
             'name' => 'Aman',
-            'email' => 'amanmail.com', 
+            'email' => 'amanmail.com',
             'age' => 23,
         ]);
 
@@ -73,7 +94,7 @@ class CreateStudentTest extends TestCase
             'age' => 24,
         ]);
 
-         $response->assertStatus(422)
+        $response->assertStatus(422)
             ->assertJsonFragment([
                 'Name is required, Please enter a name.'
             ]);
@@ -92,7 +113,7 @@ class CreateStudentTest extends TestCase
             'age' => 'twenty-three',
         ]);
 
-         $response->assertStatus(422)
+        $response->assertStatus(422)
             ->assertJsonFragment([
                 'Age must be an integer.'
             ]);
@@ -115,7 +136,7 @@ class CreateStudentTest extends TestCase
             'age' => 22,
         ]);
 
-                 $response->assertStatus(422)
+        $response->assertStatus(422)
             ->assertJsonFragment([
                 'Email must be unique. This email is already taken.'
             ]);

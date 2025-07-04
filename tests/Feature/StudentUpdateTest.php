@@ -6,11 +6,11 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Student;
 use Laravel\Passport\Passport;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StudentUpdateTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     /** @test */
     public function it_updates_a_student_successfully()
@@ -26,7 +26,7 @@ class StudentUpdateTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonFragment(['name' => 'Kunal Sharma']);
+            ->assertJsonFragment(['name' => 'Kunal Sharma']);
 
         $this->assertDatabaseHas('students', ['id' => $student->id, 'name' => 'Kunal Sharma']);
     }
@@ -43,7 +43,7 @@ class StudentUpdateTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-                 ->assertJsonFragment(['The email field must be a valid email address.']);
+            ->assertJsonFragment(['The email field must be a valid email address.']);
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class StudentUpdateTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-                 ->assertJsonFragment(['The age field must be an integer.']);
+            ->assertJsonFragment(['The age field must be an integer.']);
     }
 
     /** @test */
@@ -70,7 +70,7 @@ class StudentUpdateTest extends TestCase
             'name' => 'Unauthorized'
         ]);
 
-        $response->assertStatus(401); 
+        $response->assertStatus(401);
     }
 
     /** @test */
@@ -89,7 +89,7 @@ class StudentUpdateTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonFragment(['name' => 'Updated Only Name']);
+            ->assertJsonFragment(['name' => 'Updated Only Name']);
 
         $this->assertDatabaseHas('students', [
             'id' => $student->id,
